@@ -31,15 +31,15 @@ _start:		inc	ebx			; 1 = stdout file descriptor
 		;; There are 21 bytes available here
 		dd	0
 		dd	0
-		dd	0
-		dd	0
+		dw	0x20
+		dw	0x01
 		dd	0
 		dd	0
 		db	0
 		mov	ecx, msg		; Point ecx at string
 		mov	dl, 13			; Set edx to string length
 		int	0x80			; eax = write(ebx, ecx, edx)
-		and	eax, 0x10020		; al = 0 if no error occurred
+		xor     al, 13			; "error code" 0 if exact amount was written
 		xchg	eax, ebx		; 1 = exit system call number
 		int	0x80			; exit(ebx)
 msg:		db	'hello, world', 10
