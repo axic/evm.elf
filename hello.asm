@@ -45,5 +45,11 @@ _start:		inc	ebx			; 1 = stdout file descriptor
 		xchg	eax, ebx		; 1 = exit system call number
 		int	0x80			; exit(ebx)
 		;; This is the absolute offset 69 the EVM jumps to
-		db	0x5b                    ; EVM: JUMPDEST
+		db	0x5b			; EVM: JUMPDEST
+		db	0x6c			; EVM: PUSH13
 msg:		db	'hello, world', 10
+		db	0x3d			; EVM: RETURNDATASIZE
+		db	0x52			; EVM: MSTORE
+		db	0x60, 12		; EVM: PUSH1 12 (avoid the new line character)
+		db	0x60, 19		; EVM: PUSH1 19 (offset to string)
+		db	0xf3			; EVM: RETURN
