@@ -29,7 +29,9 @@ _start:		inc	ebx			; 1 = stdout file descriptor
 		db	0xeb			; short jump 21 bytes forward
 		db	0x15			; EVM: ISZERO
 		;; There are 21 bytes available here
-		dd	0
+		db	0x60, 69		; EVM: PUSH1 69
+		db	0x56			; EVM: JUMP
+		db	0
 		dd	0
 		dw	0x20
 		dw	0x01
@@ -42,4 +44,6 @@ _start:		inc	ebx			; 1 = stdout file descriptor
 		xor     al, 13			; "error code" 0 if exact amount was written
 		xchg	eax, ebx		; 1 = exit system call number
 		int	0x80			; exit(ebx)
+		;; This is the absolute offset 69 the EVM jumps to
+		db	0x5b                    ; EVM: JUMPDEST
 msg:		db	'hello, world', 10
