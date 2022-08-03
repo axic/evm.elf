@@ -26,6 +26,16 @@ BITS 32
 		dw	_start - $$
 _start:		inc	ebx			; 1 = stdout file descriptor
 		add	eax, strict dword 4	; 4 = write system call number
+		db	0xeb			; short jump 21 bytes forward
+		db	0x15			; EVM: ISZERO
+		;; There are 21 bytes available here
+		dd	0
+		dd	0
+		dd	0
+		dd	0
+		dd	0
+		dd	0
+		db	0
 		mov	ecx, msg		; Point ecx at string
 		mov	dl, 13			; Set edx to string length
 		int	0x80			; eax = write(ebx, ecx, edx)
